@@ -1,9 +1,15 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import MapSection from "@/components/map-section"
+import dynamic from "next/dynamic"
 import FilterBar from "@/components/filter-bar"
 import PropertyGrid from "@/components/property-grid"
+
+// ✅ Load MapSection with SSR disabled (fixes Vercel error)
+const MapSection = dynamic(
+  () => import("@/components/map-section"),
+  { ssr: false }
+)
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
@@ -38,6 +44,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <div className="flex flex-col md:flex-row">
+
         {/* Left - Map Section */}
         <div className="w-full md:w-1/2 md:sticky md:top-0 md:h-screen">
           <MapSection
@@ -54,12 +61,14 @@ export default function Home() {
             selectedFilter={selectedFilter}
             onFilterChange={setSelectedFilter}
           />
+
           <PropertyGrid
             isLoading={isLoading}
             properties={filteredProperties}
             onSelectProperty={(p) => setSelectedProperty(p)}
           />
         </div>
+
       </div>
     </main>
   )
