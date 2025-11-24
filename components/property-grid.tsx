@@ -16,9 +16,11 @@ interface Property {
 export default function PropertyGrid({
   isLoading = false,
   properties = [],
+  onSelectProperty,
 }: {
   isLoading?: boolean
   properties?: Property[]
+  onSelectProperty: (property: Property) => void
 }) {
   const [expandedId, setExpandedId] = useState<string | null>(null)
 
@@ -51,6 +53,7 @@ export default function PropertyGrid({
               onToggleExpand={() =>
                 setExpandedId(expandedId === property.id ? null : property.id)
               }
+              onSelectProperty={onSelectProperty}
             />
           )
         })}

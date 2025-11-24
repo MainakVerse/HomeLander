@@ -16,17 +16,24 @@ interface PropertyCardProps {
   property?: Property
   isExpanded: boolean
   onToggleExpand: () => void
+  onSelectProperty: (property: Property) => void
 }
 
-export default function PropertyCard({ property, isExpanded, onToggleExpand }: PropertyCardProps) {
-
+export default function PropertyCard({
+  property,
+  isExpanded,
+  onToggleExpand,
+  onSelectProperty,
+}: PropertyCardProps) {
   if (!property) return null
 
   return (
     <div
       onClick={onToggleExpand}
       className={`transition-all duration-300 cursor-pointer ${
-        isExpanded ? "ring-2 ring-blue-500 shadow-xl shadow-blue-500/20" : "hover:shadow-lg"
+        isExpanded
+          ? "ring-2 ring-blue-500 shadow-xl shadow-blue-500/20"
+          : "hover:shadow-lg"
       }`}
     >
       <div
@@ -75,7 +82,13 @@ export default function PropertyCard({ property, isExpanded, onToggleExpand }: P
                 </p>
               </div>
 
-              <button className="w-full mt-4 bg-gradient-to-r from-blue-500 to-teal-500 text-white py-2 rounded-lg font-medium transition-all hover:shadow-lg hover:shadow-blue-500/30 active:scale-95">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation() // don’t toggle card
+                  onSelectProperty(property)
+                }}
+                className="w-full mt-4 bg-gradient-to-r from-blue-500 to-teal-500 text-white py-2 rounded-lg font-medium transition-all hover:shadow-lg hover:shadow-blue-500/30 active:scale-95"
+              >
                 View Details
               </button>
             </div>

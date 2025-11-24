@@ -9,6 +9,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
   const [properties, setProperties] = useState<any[]>([])
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null)
+  const [selectedProperty, setSelectedProperty] = useState<any | null>(null)
 
   useEffect(() => {
     async function fetchData() {
@@ -36,16 +37,30 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      <MapSection isLoading={isLoading} />
-      <FilterBar
-        isLoading={isLoading}
-        selectedFilter={selectedFilter}
-        onFilterChange={setSelectedFilter}
-      />
-      <PropertyGrid
-        isLoading={isLoading}
-        properties={filteredProperties}
-      />
+      <div className="flex flex-col md:flex-row">
+        {/* Left - Map Section */}
+        <div className="w-full md:w-1/2 md:sticky md:top-0 md:h-screen">
+          <MapSection
+            isLoading={isLoading}
+            properties={filteredProperties}
+            selectedProperty={selectedProperty}
+          />
+        </div>
+
+        {/* Right - Filters + Properties */}
+        <div className="w-full md:w-1/2 p-4 overflow-y-auto">
+          <FilterBar
+            isLoading={isLoading}
+            selectedFilter={selectedFilter}
+            onFilterChange={setSelectedFilter}
+          />
+          <PropertyGrid
+            isLoading={isLoading}
+            properties={filteredProperties}
+            onSelectProperty={(p) => setSelectedProperty(p)}
+          />
+        </div>
+      </div>
     </main>
   )
 }
